@@ -1,0 +1,38 @@
+# Dependency directories
+node_modules/
+yarn.lock
+package-lock.json
+
+# Build output
+dist/
+build/
+out/
+*.log
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# IDE-specific files
+.idea/
+.vscode/
+*.iml
+
+# Compiled output
+*.js
+*.jsx
+*.ts
+*.tsx
+
+# Editor and system files
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Dependency caching (for npm)
+.npm
+.npmrc
+
+*.manifest.json
