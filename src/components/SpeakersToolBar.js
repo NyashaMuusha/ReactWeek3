@@ -15,7 +15,7 @@ const SpeakersToolBar = ({theme,setTheme, showSessions, setShowSessions}) => {
             </li> 
             <li className="d-flex flex-column flex-md-row ml-sm-5 ml-0">
               <strong>Theme</strong>
-              <label classname="dropdown">
+              <label className="dropdown">
                 <select className="form-control theme" value={theme}
                 onChange={(event) => setTheme(event.target.value)}>
                   <option value="light">Light</option>
