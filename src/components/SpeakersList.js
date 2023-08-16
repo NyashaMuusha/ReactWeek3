@@ -1,36 +1,57 @@
-import {useState} from 'react';
+import React from "react";
 import Speaker from "./Speaker";
-import {data} from '../../speakerData';
+import ReactPlaceholder from 'react-placeholder';
+import useRequestDelay, { REQUEST_STATUS } from "./hooks/useRequestDelay";
+import { data } from '../../speakerData';
+function SpeakersList({ showSessions }) {
+  const {
+    data: speakersData,
+    requestStatus,
+    error,
+    updateRecord,
+  } = useRequestDelay(2000, data);
 
-const SpeakersList = ({ showSessions}) => {
-  const [speakersData, setSpeakersData] = useState(data);
-
-  const onFavoriteToggle = (id) => {
-    const speakersRecPrevious = speakersData.find((rec)=> {
-      return rec.id === id;
-    })
-    const speakerRecUpdated = {
-      ...speakersRecPrevious,
-      favorite: !speakersRecPrevious.favorite
-    }
-    const speakerDataNew = speakersData.map((rec)=> {
-      return rec.id === id ? speakerRecUpdated : rec;
-    })
-    setSpeakersData(speakerDataNew);
+  if (requestStatus === REQUEST_STATUS.FAILURE) {
+    return (
+      <div className="text-danger">
+        ERROR: <b>loading Speaker Data Failed {error}</b>
+      </div>
+    );
   }
 
+  //if (isLoading === true) return <div>Loading...</div>
 
-  return (  <div className="container speakers-list">
-      <div className="row">
-        {speakersData.map((speaker) => {
-          return <Speaker key={speaker.id} 
-          speaker={speaker} 
-          showSessions={showSessions}
-          onFavoriteToggle={()=> onFavoriteToggle(speaker.id)}
-          />;
-        })}
-      </div>
-    </div> );
+  return (
+    <div className="container speakers-list">
+      <ReactPlaceholder
+        type="media"
+        rows={15}
+        className="speakerslist-placeholder"
+        ready={requestStatus === REQUEST_STATUS.SUCCESS}
+      >
+        <div className="row">
+          {speakersData.map(function (speaker) {
+            return (
+              <Speaker
+                key={speaker.id}
+                speaker={speaker}
+                showSessions={showSessions}
+                onFavoriteToggle={(doneCallback) => {
+                  updateRecord(
+                    {
+                      ...speaker,
+                      favorite: !speaker.favorite,
+                    },
+                    doneCallback
+                  );
+                }}
+              />
+            );
+          })}
+        </div>
+      </ReactPlaceholder>
+    </div>
+  );
 }
- 
+
 export default SpeakersList;
