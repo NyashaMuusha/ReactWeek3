@@ -1,8 +1,9 @@
-import React, { useContext } from "react";
 import { ThemeContext } from "../contexts/ThemeContext";
+import { useContext } from "react";
 
-const Header = () => {
+function Header() {
   const { theme } = useContext(ThemeContext);
+
   return (
     <div className="padT4 padB4">
       <div className="container mobile-container">
@@ -23,6 +24,6 @@ const Header = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Header;
