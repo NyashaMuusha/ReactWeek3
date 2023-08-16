@@ -1,7 +1,6 @@
-import React from 'react';
-import Header from './Header';
-import Speakers from './Speakers';
-import Layout from './Layout';
+import Header from "./Header";
+import Speakers from "./Speakers";
+import Layout from "./Layout";
 
 function App() {
   return (

@@ -1,17 +1,19 @@
-import React,{useContext} from "react";
+import { useContext } from "react";
 import Speaker from "./Speaker";
-import ReactPlaceholder from 'react-placeholder';
-import useRequestDelay, { REQUEST_STATUS } from "./hooks/useRequestDelay";
+import ReactPlaceHolder from "react-placeholder";
+import useRequestRest, { REQUEST_STATUS } from "../hooks/useRequestRest";
 import { SpeakerFilterContext } from "../contexts/SpeakerFilterContext";
+import SpeakerAdd from "./SpeakerAdd";
 
-import { data } from '../../speakerData';
 function SpeakersList() {
   const {
     data: speakersData,
     requestStatus,
     error,
     updateRecord,
-  } = useRequestDelay(2000, data);
+    insertRecord,
+    deleteRecord,
+  } = useRequestRest();
 
   const { searchQuery, eventYear } = useContext(SpeakerFilterContext);
 
@@ -27,12 +29,13 @@ function SpeakersList() {
 
   return (
     <div className="container speakers-list">
-      <ReactPlaceholder
+      <ReactPlaceHolder
         type="media"
         rows={15}
         className="speakerslist-placeholder"
         ready={requestStatus === REQUEST_STATUS.SUCCESS}
       >
+        <SpeakerAdd eventYear={eventYear} insertRecord={insertRecord} />
         <div className="row">
           {speakersData
             .filter(function (speaker) {
@@ -51,20 +54,14 @@ function SpeakersList() {
                 <Speaker
                   key={speaker.id}
                   speaker={speaker}
-                  onFavoriteToggle={(doneCallback) => {
-                    updateRecord(
-                      {
-                        ...speaker,
-                        favorite: !speaker.favorite,
-                      },
-                      doneCallback
-                    );
-                  }}
+                  updateRecord={updateRecord}
+                  insertRecord={insertRecord}
+                  deleteRecord={deleteRecord}
                 />
               );
             })}
         </div>
-      </ReactPlaceholder>
+      </ReactPlaceHolder>
     </div>
   );
 }
